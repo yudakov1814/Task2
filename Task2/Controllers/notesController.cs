@@ -13,7 +13,17 @@ namespace Task2.Controllers
         private const int N = 5;
         private static Dictionary<int, Note> repository = new Dictionary<int, Note>();
 
-        // GET: <notesController>/?query=string
+        /// <summary>
+        /// Получить заметки, удовлетворяющие запросу
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /notes?query=string
+        /// Если запрос пустой, то будут возвращены все заметки
+        /// </remarks>
+        /// <param name="query">Строка для поиска</param>
+        /// <response code="200">Возвращает найденные заметки</response>
         [HttpGet]
         public JsonResult Get(string query = null)
         {
@@ -31,7 +41,18 @@ namespace Task2.Controllers
             return new JsonResult(data);
         }
 
-        // GET <notesController>/5
+        /// <summary>
+        /// Получить заметку
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /notes/1
+        ///
+        /// </remarks>
+        /// <param name="id">Идентификатор заметки</param>
+        /// <response code="200">Возвращает найденную заметку</response>
+        /// <response code="404">Если заметка не найдена</response> 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -47,7 +68,17 @@ namespace Task2.Controllers
             return new JsonResult(data);
         }
 
-        // POST <notesController>
+        /// <summary>
+        /// Добавить заметку
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /notes
+        ///
+        /// </remarks>
+        /// <response code="200">Возвращает созданную заметку</response>
+        /// <response code="500">Передана заметка без содержания</response> 
         [HttpPost]
         public IActionResult Post([FromBody] NoteJsonModel model)
         { 
@@ -63,7 +94,18 @@ namespace Task2.Controllers
             return new JsonResult(data);
         }
 
-        // PUT <notesController>/5
+        /// <summary>
+        /// Обновить заметку
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /notes/1
+        ///
+        /// </remarks>
+        /// <param name="id">Идентификатор заметки</param>
+        /// <response code="200">Если заметка успешно обновлена</response>
+        /// <response code="404">Если заметка не найдена</response>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] NoteJsonModel model)
         {
@@ -74,10 +116,21 @@ namespace Task2.Controllers
 
             CreateOrUpdate(id, model);
 
-            return StatusCode(202);
+            return StatusCode(200);
         }
 
-        // DELETE <notesController>/5
+        /// <summary>
+        /// Удалить заметку
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /notes/1
+        ///
+        /// </remarks>
+        /// <param name="id">Идентификатор заметки</param>
+        /// <response code="200">Если заметка успешно удалена</response>
+        /// <response code="404">Если заметка не найдена</response>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -88,7 +141,7 @@ namespace Task2.Controllers
 
             repository.Remove(id);
 
-            return StatusCode(202);
+            return StatusCode(200);
         }
 
         private Note CreateOrUpdate(int id, NoteJsonModel model)
